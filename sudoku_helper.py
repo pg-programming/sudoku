@@ -2,6 +2,7 @@ import sys
 import tty
 import termios
 
+
 def get_board(lines):
     board = []
     for i in range(9):
@@ -13,22 +14,24 @@ def get_board(lines):
         board.append(line)
     return board, len(lines)+10
 
+
 def print_board(board):
-    print "    A B C   D E F   G H I"
-    print "  ._______________________."
+    print("    A B C   D E F   G H I")
+    print("  ._______________________.")
     for i, line in enumerate(board):
-        print "%d |" % i,
+        print("%d |" % i, end='')
         for j, char in enumerate(line):
-            print "%s" % ('-' if char == '0' else char),
+            print("%s" % ('-' if char == '0' else char), end='')
             if (j+1) % 3 == 0:
-                print "|",
-        print
+                print("|", end='')
+        print()
         if (i+1) % 3 == 0:
-            print "  |_______|_______|_______|"
+            print("  |_______|_______|_______|")
+
 
 def get_boards():
     with open('sudoku-boards.txt', 'r') as f:
-        lines = [ l.strip() for l in f.readlines() if l.strip() ]
+        lines = [l.strip() for l in f.readlines() if l.strip()]
     boards = []
     cur_line = 0
     while cur_line < len(lines):
@@ -36,16 +39,17 @@ def get_boards():
         if line.startswith('#'):
             cur_line += 1
             continue
-        if '%board%' in line: 
+        if '%board%' in line:
             board, cur_line = get_board(lines[cur_line+1:])
             boards.append(board)
         else:
             cur_line += 1
     return boards
 
+
 def get_ch(message=None):
     if message:
-        print message,
+        print(message, end='')
     fd = sys.stdin.fileno()
     old_settings = termios.tcgetattr(fd)
     try:
@@ -55,17 +59,20 @@ def get_ch(message=None):
         termios.tcsetattr(fd, termios.TCSADRAIN, old_settings)
     return ch
 
+
 def valid_line(line):
     for i in range(1, 10):
         if str(i) not in line:
             return False
     return True
 
+
 def valid_column(board, index):
     col = []
     for i in range(9):
         col.append(board[i][index])
     return valid_line(col)
+
 
 def valid_square(board, index):
     square = []
@@ -80,11 +87,17 @@ def valid_square(board, index):
             square.append(board[i][j])
     return valid_line(square)
 
+
 def detect_win(board):
     for i in range(9):
-        if not valid_line(board[i]) or not valid_column(board, i) or not valid_square(board, i):
+        if (
+                not valid_line(board[i]) or
+                not valid_column(board, i) or
+                not valid_square(board, i)
+        ):
             return False
     return True
+
 
 def update_board(board, col, row, val):
     def valid(val):
@@ -98,30 +111,29 @@ def update_board(board, col, row, val):
             return None
         board[row][col] = val
         return board
-    except:
+    except Exception:
         return None
 
+
 def print_sudoku():
-    print """
-   _____           _       _          
-  / ____|         | |     | |         
- | (___  _   _  __| | ___ | | ___   _ 
+    print("""
+   _____           _       _
+  / ____|         | |     | |
+ | (___  _   _  __| | ___ | | ___   _
   \___ \| | | |/ _` |/ _ \| |/ / | | |
   ____) | |_| | (_| | (_) |   <| |_| |
  |_____/ \__,_|\__,_|\___/|_|\_\\__,_|
- """
+ """)
 
-                                      
 
 def print_victory():
-    print """
- __      ___      _                   _ 
+    print("""
+ __      ___      _                   _
  \ \    / (_)    | |                 | |
   \ \  / / _  ___| |_ ___  _ __ _   _| |
    \ \/ / | |/ __| __/ _ \| '__| | | | |
     \  /  | | (__| || (_) | |  | |_| |_|
      \/   |_|\___|\__\___/|_|   \__, (_)
-                                 __/ |  
-                                |___/   
-"""
-                                                          
+                                 __/ |
+                                |___/
+""")

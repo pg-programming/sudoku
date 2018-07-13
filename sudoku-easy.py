@@ -7,28 +7,34 @@ import os
 
 scores_file = 'sudoku_scores.txt'
 
+
 def list_scores(name):
     pass
+
 
 def write_outcome(name, outcome):
     pass
 
+
 def play_game(name, board):
     pass
+
 
 def show_menu():
     # loop continually until a menu item is selected
     pass
+
 
 def new_game():
     boards = sudoku.get_boards()
     board = boards[randint(0, len(boards)-1)]
     name = ""
     while not name:
-        name = raw_input("What's your name? ").strip()
+        name = input("What's your name? ").strip()
         if not name:
-            print "Sorry, I didn't get that."
+            print("Sorry, I didn't get that.")
     play_game(name, board)
+
 
 def parse_results(results):
     results_dict = {}
@@ -48,8 +54,9 @@ def parse_results(results):
             raise Exception("I didn't recognize the outcome")
     return results_dict
 
+
 def quit(name=None, outcome=None):
-    if name != None and outcome != None:
+    if name is not None and outcome is not None:
         write_outcome(name, outcome)
         list_scores(name)
     os.system('clear')

@@ -7,20 +7,26 @@ import os
 
 scores_file = 'sudoku_scores.txt'
 
+
 def list_scores(name):
     pass
+
 
 def write_outcome(name, outcome):
     pass
 
+
 def play_game(name, board):
     pass
+
 
 def new_game():
     pass
 
+
 def show_menu():
     pass
+
 
 def parse_results(results):
     results_dict = {}
@@ -39,6 +45,7 @@ def parse_results(results):
         else:
             raise Exception("I didn't recognize the outcome")
     return results_dict
+
 
 if __name__ == '__main__':
     show_menu()
